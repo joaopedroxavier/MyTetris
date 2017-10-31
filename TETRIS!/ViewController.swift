@@ -35,8 +35,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Do any additional setup after loading the view, typically from a nib.
     }
     
+    //#######################    Plane Detection and Label Update   ####################################
+    
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        guard let _ = anchor as? ARPlaneAnchor else { return }
         
         DispatchQueue.main.async{
             self.planeDetectedLabel.text = "Plane detected!"
@@ -79,7 +81,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         audioPlayer?.play()
     }
     
-    //########################################################################################
+    //#######################    Restart AR Session   ####################################
     
     @IBAction func restartSession(_ sender: Any) {
         sceneView.session.pause()
@@ -88,6 +90,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
