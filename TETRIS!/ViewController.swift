@@ -13,7 +13,8 @@ import AVFoundation
 class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet weak var sceneView: ARSCNView!
-    @IBOutlet weak var planeDetectedLabel: UILabel!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var playButton: UIButton!
     
     let configuration = ARWorldTrackingConfiguration()
     
@@ -28,25 +29,89 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.delegate = self
         
         configuration.planeDetection = .horizontal
-        planeDetectedLabel.isHidden = false
-        planeDetectedLabel.text = "Looking for plane surfaces..."
+        
+        showMessage("Looking for plane surfaces...")
+        
+        hidePlayButton()
         
         prepareBackgroundMusic()
         // Do any additional setup after loading the view, typically from a nib.
     }
     
+    func showMessage(_ message: String) {
+        DispatchQueue.main.async{
+            self.messageLabel.text = message
+            self.messageLabel.isHidden = false
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            self.messageLabel.isHidden = true
+        }
+    }
+    
     //#######################    Plane Detection and Label Update   ####################################
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        
+        showMessage("Plane detected!")
+        showPlayButton()
+        
+        let floorNode = createFloor(on: planeAnchor)
+        
+        node.addChildNode(floorNode)
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        
+        node.enumerateChildNodes { (childNode, _) in
+            childNode.removeFromParentNode()
+        }
+        
+        let floorNode = createFloor(on: planeAnchor)
+        
+        node.addChildNode(floorNode)
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
         guard let _ = anchor as? ARPlaneAnchor else { return }
         
-        DispatchQueue.main.async{
-            self.planeDetectedLabel.text = "Plane detected!"
-            self.planeDetectedLabel.isHidden = false
+        node.enumerateChildNodes { (childNode, _) in
+            childNode.removeFromParentNode()
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            self.planeDetectedLabel.isHidden = true
+        
+        if sceneView.scene.rootNode.childNodes.isEmpty == true {
+            hidePlayButton()
+            showMessage("Looking for plane surfaces...")
         }
+    }
+    
+    func createFloor(on planeAnchor: ARPlaneAnchor) -> SCNNode {
+        let floorNode = SCNNode(geometry: SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z)))
+        
+        floorNode.geometry?.firstMaterial?.diffuse.contents = UIColor.darkGray
+        floorNode.geometry?.firstMaterial?.isDoubleSided = true
+        floorNode.position = SCNVector3(planeAnchor.center.x, planeAnchor.center.y, planeAnchor.center.z)
+        floorNode.eulerAngles = SCNVector3(90.toRadians(), 0, 0)
+        return floorNode
+    }
+    
+    //#######################    Game Setup   ####################################
+    
+    func showPlayButton() {
+        DispatchQueue.main.async {
+            self.playButton.isHidden = false
+        }
+    }
+    
+    func hidePlayButton() {
+        DispatchQueue.main.async {
+            self.playButton.isHidden = true
+        }
+    }
+    
+    @IBAction func addBlock(_ sender: Any) {
+        
     }
     
     //#######################    Handling background music   ####################################
@@ -84,11 +149,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     //#######################    Restart AR Session   ####################################
     
     @IBAction func restartSession(_ sender: Any) {
+        showMessage("Reinitializing session...")
+        hidePlayButton()
         sceneView.session.pause()
         sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
             node.removeFromParentNode()
         }
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+        showMessage("Looking for plane surfaces...")
     }
     
     override func didReceiveMemoryWarning() {
@@ -99,3 +167,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
 }
 
+extension Int {
+    func toRadians() -> Double { return Double(self) * 2 * Double.pi / 360 }
+}

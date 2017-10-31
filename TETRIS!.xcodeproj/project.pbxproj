@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D50E18CF1FA901A500400D7A /* TetrisBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50E18CE1FA901A500400D7A /* TetrisBlock.swift */; };
 		D592DCF31FA266A100258905 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592DCF21FA266A100258905 /* AppDelegate.swift */; };
 		D592DCF51FA266A100258905 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592DCF41FA266A100258905 /* ViewController.swift */; };
 		D592DCF81FA266A100258905 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D592DCF61FA266A100258905 /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D50E18CE1FA901A500400D7A /* TetrisBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisBlock.swift; sourceTree = "<group>"; };
 		D592DCEF1FA266A100258905 /* TETRIS!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TETRIS!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D592DCF21FA266A100258905 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D592DCF41FA266A100258905 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				D592DD201FA26D0B00258905 /* Tetris.mp3 */,
 				D592DCF21FA266A100258905 /* AppDelegate.swift */,
 				D592DCF41FA266A100258905 /* ViewController.swift */,
+				D50E18CE1FA901A500400D7A /* TetrisBlock.swift */,
 				D592DCF61FA266A100258905 /* Main.storyboard */,
 				D592DCF91FA266A100258905 /* Assets.xcassets */,
 				D592DCFB1FA266A100258905 /* LaunchScreen.storyboard */,
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D592DCF51FA266A100258905 /* ViewController.swift in Sources */,
+				D50E18CF1FA901A500400D7A /* TetrisBlock.swift in Sources */,
 				D592DCF31FA266A100258905 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

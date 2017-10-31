@@ -22,34 +22,52 @@
                             </arscnView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7C-dg-vfv">
                                 <rect key="frame" x="252" y="40" width="107" height="30"/>
-                                <state key="normal" title="Restart Session"/>
+                                <state key="normal" title="Restart Session">
+                                    <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
+                                </state>
                                 <connections>
                                     <action selector="restartSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="w2X-zM-dBM"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MzB-jH-rgN">
                                 <rect key="frame" x="16" y="617" width="42" height="30"/>
-                                <state key="normal" title="Pause"/>
+                                <state key="normal" title="Pause">
+                                    <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
+                                </state>
                                 <connections>
                                     <action selector="pauseBackgroundMusic:" destination="BYZ-38-t0r" eventType="touchUpInside" id="f6t-Uj-bCf"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rOZ-wn-rj8">
                                 <rect key="frame" x="309" y="617" width="50" height="30"/>
-                                <state key="normal" title="Restart"/>
+                                <state key="normal" title="Restart">
+                                    <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
+                                </state>
                                 <connections>
                                     <action selector="restartBackgroundMusic:" destination="BYZ-38-t0r" eventType="touchUpInside" id="O6B-YY-t7y"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Plane Detected!!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DWz-t0-T8z">
                                 <rect key="frame" x="16" y="44" width="200" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <color key="textColor" red="0.95419574873096447" green="0.95419574873096447" blue="0.95419574873096447" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwP-QT-GMr">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ETo-wU-SBD">
+                                <rect key="frame" x="16" y="73" width="100" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Play Game">
+                                    <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="addBlock:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XdR-6t-eSp"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwP-QT-GMr">
                                 <rect key="frame" x="172" y="617" width="30" height="30"/>
-                                <state key="normal" title="Play"/>
+                                <state key="normal" title="Play">
+                                    <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
+                                </state>
                                 <connections>
                                     <action selector="playBackgroundMusic:" destination="BYZ-38-t0r" eventType="touchUpInside" id="O8j-Xz-eLp"/>
                                 </connections>
@@ -59,6 +77,8 @@
                         <constraints>
                             <constraint firstItem="N43-SA-lxF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="00m-De-YY5"/>
                             <constraint firstItem="N43-SA-lxF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="AId-zz-CPv"/>
+                            <constraint firstItem="rOZ-wn-rj8" firstAttribute="leading" secondItem="XwP-QT-GMr" secondAttribute="trailing" constant="107" id="GCs-pf-GcS"/>
+                            <constraint firstItem="XwP-QT-GMr" firstAttribute="leading" secondItem="MzB-jH-rgN" secondAttribute="trailing" constant="114" id="Gw7-My-YD6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="rOZ-wn-rj8" secondAttribute="trailing" constant="16" id="JvF-df-OTR"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="rOZ-wn-rj8" secondAttribute="bottom" constant="20" id="L1b-6d-rLL"/>
                             <constraint firstItem="U7C-dg-vfv" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="L6i-MP-bOo"/>
@@ -74,7 +94,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="planeDetectedLabel" destination="DWz-t0-T8z" id="kgW-T4-Eq7"/>
+                        <outlet property="messageLabel" destination="DWz-t0-T8z" id="6Nt-4G-CXx"/>
+                        <outlet property="playButton" destination="ETo-wU-SBD" id="LmJ-rS-98Z"/>
                         <outlet property="sceneView" destination="N43-SA-lxF" id="2ub-qj-zwg"/>
                     </connections>
                 </viewController>
