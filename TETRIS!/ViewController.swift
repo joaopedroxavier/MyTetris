@@ -17,6 +17,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var playButton: UIButton!
     
     let configuration = ARWorldTrackingConfiguration()
+    var gameFloorNode : SCNNode?
+    var foundGamePlane = false
     
     var audioPlayer : AVAudioPlayer?
     
@@ -24,9 +26,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
         sceneView.session.run(configuration)
         sceneView.delegate = self
+        sceneView.scene.physicsWorld.gravity = SCNVector3(+0.0, -2.0, +0.0)
         
         configuration.planeDetection = .horizontal
         
@@ -57,6 +60,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         showPlayButton()
         
         let floorNode = createFloor(on: planeAnchor)
+        if(!foundGamePlane) { gameFloorNode = node }
         
         node.addChildNode(floorNode)
     }
@@ -64,12 +68,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
         
+        let floorNode = createFloor(on: planeAnchor)
+        
         node.enumerateChildNodes { (childNode, _) in
             childNode.removeFromParentNode()
         }
         
-        let floorNode = createFloor(on: planeAnchor)
-        
+        if(!foundGamePlane) { gameFloorNode = node }
+
         node.addChildNode(floorNode)
     }
     
@@ -87,12 +93,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func createFloor(on planeAnchor: ARPlaneAnchor) -> SCNNode {
-        let floorNode = SCNNode(geometry: SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z)))
+        let floorNode = SCNNode(geometry: SCNBox(width: CGFloat(planeAnchor.extent.x), height: CGFloat(0.05), length: CGFloat(planeAnchor.extent.z), chamferRadius: 0))
+        
+        floorNode.physicsBody = SCNPhysicsBody.kinematic()
         
         floorNode.geometry?.firstMaterial?.diffuse.contents = UIColor.darkGray
         floorNode.geometry?.firstMaterial?.isDoubleSided = true
-        floorNode.position = SCNVector3(planeAnchor.center.x, planeAnchor.center.y, planeAnchor.center.z)
-        floorNode.eulerAngles = SCNVector3(90.toRadians(), 0, 0)
+        
         return floorNode
     }
     
@@ -111,6 +118,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @IBAction func addBlock(_ sender: Any) {
+        guard let gamePlaneNode = gameFloorNode else { return }
+        
+        if(!foundGamePlane) {
+            gameFloorNode = gamePlaneNode.copy() as? (SCNNode)
+            foundGamePlane = true
+            sceneView.scene.rootNode.addChildNode(gameFloorNode!)
+        }
+        
+        let blockNode = TetrisBlock()
+        gameFloorNode?.addChildNode(blockNode.sprite)
         
     }
     
@@ -156,6 +173,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             node.removeFromParentNode()
         }
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+        foundGamePlane = false
         showMessage("Looking for plane surfaces...")
     }
     
@@ -166,6 +184,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
 
 }
+
+func + (lhs: SCNVector3, rhs: SCNVector3) -> SCNVector3 { return SCNVector3(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z); }
 
 extension Int {
     func toRadians() -> Double { return Double(self) * 2 * Double.pi / 360 }
