@@ -17,6 +17,7 @@
 		D592DD131FA266A100258905 /* TETRIS_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592DD121FA266A100258905 /* TETRIS_UITests.swift */; };
 		D5A0BA6A1FA27D1B00FE3DD9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5A0BA691FA27D1B00FE3DD9 /* AVFoundation.framework */; };
 		D5A0BA6B1FA27E1500FE3DD9 /* Tetris.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D592DD201FA26D0B00258905 /* Tetris.mp3 */; };
+		D5A180621FBE4BE100523CC3 /* TetrisBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A180611FBE4BE100523CC3 /* TetrisBox.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		D592DD141FA266A100258905 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D592DD201FA26D0B00258905 /* Tetris.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Tetris.mp3; sourceTree = "<group>"; };
 		D5A0BA691FA27D1B00FE3DD9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		D5A180611FBE4BE100523CC3 /* TetrisBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisBox.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 				D592DCF21FA266A100258905 /* AppDelegate.swift */,
 				D592DCF41FA266A100258905 /* ViewController.swift */,
 				D50E18CE1FA901A500400D7A /* TetrisBlock.swift */,
+				D5A180611FBE4BE100523CC3 /* TetrisBox.swift */,
 				D592DCF61FA266A100258905 /* Main.storyboard */,
 				D592DCF91FA266A100258905 /* Assets.xcassets */,
 				D592DCFB1FA266A100258905 /* LaunchScreen.storyboard */,
@@ -285,6 +288,7 @@
 			files = (
 				D592DCF51FA266A100258905 /* ViewController.swift in Sources */,
 				D50E18CF1FA901A500400D7A /* TetrisBlock.swift in Sources */,
+				D5A180621FBE4BE100523CC3 /* TetrisBox.swift in Sources */,
 				D592DCF31FA266A100258905 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

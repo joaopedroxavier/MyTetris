@@ -62,7 +62,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let floorNode = createFloor(on: planeAnchor)
         if(!foundGamePlane) { gameFloorNode = node }
         
-        node.addChildNode(floorNode)
+        node.addChildNode(floorNode.floorNode)
+        node.addChildNode(floorNode.ceilNode)
+        node.addChildNode(floorNode.leftWallNode)
+        node.addChildNode(floorNode.rightWallNode)
+        node.addChildNode(floorNode.frontWallNode)
+        node.addChildNode(floorNode.backWallNode)
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
@@ -76,7 +81,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         if(!foundGamePlane) { gameFloorNode = node }
 
-        node.addChildNode(floorNode)
+        node.addChildNode(floorNode.floorNode)
+        node.addChildNode(floorNode.ceilNode)
+        node.addChildNode(floorNode.leftWallNode)
+        node.addChildNode(floorNode.rightWallNode)
+        node.addChildNode(floorNode.frontWallNode)
+        node.addChildNode(floorNode.backWallNode)
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
@@ -92,14 +102,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-    func createFloor(on planeAnchor: ARPlaneAnchor) -> SCNNode {
-        let floorNode = SCNNode(geometry: SCNBox(width: CGFloat(planeAnchor.extent.x), height: CGFloat(0.05), length: CGFloat(planeAnchor.extent.z), chamferRadius: 0))
+    func createFloor(on planeAnchor: ARPlaneAnchor) -> TetrisBox {
+        //let floorNode = SCNNode(geometry: SCNBox(width: CGFloat(planeAnchor.extent.x), height: CGFloat(0.05), length: CGFloat(planeAnchor.extent.z), chamferRadius: 0))
+        let floorNode = TetrisBox()
         
+        /*
         floorNode.physicsBody = SCNPhysicsBody.kinematic()
         
         floorNode.geometry?.firstMaterial?.diffuse.contents = UIColor.darkGray
         floorNode.geometry?.firstMaterial?.isDoubleSided = true
-        
+        */
+ 
         return floorNode
     }
     
