@@ -28,6 +28,6 @@ class TetrisPiece {
         pieces.append(TetrisBlock())
         pieces.append(TetrisBlock())
         pieces.append(TetrisBlock())
-        mountSquare(pieces)
+        mountColumn(pieces)
     }
 }
