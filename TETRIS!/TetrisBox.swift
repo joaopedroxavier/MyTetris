@@ -9,7 +9,7 @@
 import Foundation
 import SceneKit
 
-let boxLength = CGFloat(0.01)
+let boxLength = CGFloat(0.02)
 let boxWidth = CGFloat(0.5)
 let boxHeight = CGFloat(0.6)
 let offset = CGFloat(0.02)
@@ -30,7 +30,7 @@ class TetrisBox {
         setNode(leftWallNode, boxWidth / 2, boxHeight / 2, 0.0)
         setNode(rightWallNode, -boxWidth / 2, boxHeight / 2, 0.0)
         setNode(frontWallNode, 0.0, boxHeight / 2, boxLength/2 + offset + epsilon)
-        setNode(backWallNode, 0.0, boxHeight / 2, -(boxLength/2 + offset + epsilon) )
+        setNode(backWallNode, 0.0, boxHeight / 2, -(boxLength/2 + offset + epsilon))
     }
     
     func setNode(_ node: SCNNode, _ x: CGFloat, _ y: CGFloat, _ z: CGFloat) {
@@ -38,5 +38,9 @@ class TetrisBox {
         node.geometry?.firstMaterial?.diffuse.contents = UIColor.darkGray
         node.geometry?.firstMaterial?.transparency = CGFloat(0.1)
         node.physicsBody = SCNPhysicsBody.kinematic()
+        node.physicsBody?.contactTestBitMask = 0x000000F0
+        node.physicsBody?.collisionBitMask = 0x000000F0
+        node.physicsBody?.categoryBitMask = 0x000000F0
+        node.name = "BoxSide"
     }
 }

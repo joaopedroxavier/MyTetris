@@ -10,7 +10,7 @@ import UIKit
 import ARKit
 import AVFoundation
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate {
 
     @IBOutlet weak var sceneView: ARSCNView!
     @IBOutlet weak var messageLabel: UILabel!
@@ -19,6 +19,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let configuration = ARWorldTrackingConfiguration()
     var gameFloorNode : SCNNode?
     var foundGamePlane = false
+    var lastUpdateTime = 0.0
     
     var audioPlayer : AVAudioPlayer?
     
@@ -29,7 +30,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
         sceneView.session.run(configuration)
         sceneView.delegate = self
-        sceneView.scene.physicsWorld.gravity = SCNVector3(+0.0, -2.0, +0.0)
+        sceneView.scene.physicsWorld.gravity = SCNVector3(+0.0, -0.0, +0.0)
+        sceneView.scene.physicsWorld.contactDelegate = self
         
         configuration.planeDetection = .horizontal
         
@@ -103,17 +105,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func createFloor(on planeAnchor: ARPlaneAnchor) -> TetrisBox {
-        //let floorNode = SCNNode(geometry: SCNBox(width: CGFloat(planeAnchor.extent.x), height: CGFloat(0.05), length: CGFloat(planeAnchor.extent.z), chamferRadius: 0))
-        let floorNode = TetrisBox()
-        
-        /*
-        floorNode.physicsBody = SCNPhysicsBody.kinematic()
-        
-        floorNode.geometry?.firstMaterial?.diffuse.contents = UIColor.darkGray
-        floorNode.geometry?.firstMaterial?.isDoubleSided = true
-        */
- 
-        return floorNode
+        return TetrisBox()
     }
     
     //#######################    Game Setup   ####################################
@@ -139,9 +131,32 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             sceneView.scene.rootNode.addChildNode(gameFloorNode!)
         }
         
-        let blockNode = TetrisBlock()
-        gameFloorNode?.addChildNode(blockNode.sprite)
+        let pieceNode = TetrisPiece()
         
+        for blockNode in pieceNode.pieces { gameFloorNode?.addChildNode(blockNode.sprite) }
+        
+    }
+    
+    //#######################    Gameplay   ####################################
+    
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        
+        let firstNode = contact.nodeA
+        let secondNode = contact.nodeB
+        
+        if(firstNode.name == "NonStuck") { firstNode.name = "Stuck" }
+        if(secondNode.name == "NonStuck") { secondNode.name = "Stuck" }
+    
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        if(time - lastUpdateTime >= 0.1) {
+            lastUpdateTime = time
+            sceneView.scene.rootNode.enumerateChildNodes { (childNode, _) in
+                if(childNode.name == "NonStuck") { childNode.position.y -= 0.005 }
+                if(childNode.name == "Stuck") { childNode.physicsBody?.velocity = SCNVector3(0.0, 0.0, 0.0) }
+            }
+        }
     }
     
     //#######################    Handling background music   ####################################
@@ -199,6 +214,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 }
 
 func + (lhs: SCNVector3, rhs: SCNVector3) -> SCNVector3 { return SCNVector3(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z); }
+
+func == (lhs: SCNVector3, rhs: SCNVector3) -> Bool { return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z }
 
 extension Int {
     func toRadians() -> Double { return Double(self) * 2 * Double.pi / 360 }

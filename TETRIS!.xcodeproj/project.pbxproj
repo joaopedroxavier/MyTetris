@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D50E18CF1FA901A500400D7A /* TetrisBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50E18CE1FA901A500400D7A /* TetrisBlock.swift */; };
+		D58989A01FC33753003456B8 /* TetrisPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = D589899F1FC33753003456B8 /* TetrisPiece.swift */; };
 		D592DCF31FA266A100258905 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592DCF21FA266A100258905 /* AppDelegate.swift */; };
 		D592DCF51FA266A100258905 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592DCF41FA266A100258905 /* ViewController.swift */; };
 		D592DCF81FA266A100258905 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D592DCF61FA266A100258905 /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		D50E18CE1FA901A500400D7A /* TetrisBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisBlock.swift; sourceTree = "<group>"; };
+		D589899F1FC33753003456B8 /* TetrisPiece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisPiece.swift; sourceTree = "<group>"; };
 		D592DCEF1FA266A100258905 /* TETRIS!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TETRIS!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D592DCF21FA266A100258905 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D592DCF41FA266A100258905 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				D592DCF21FA266A100258905 /* AppDelegate.swift */,
 				D592DCF41FA266A100258905 /* ViewController.swift */,
 				D50E18CE1FA901A500400D7A /* TetrisBlock.swift */,
+				D589899F1FC33753003456B8 /* TetrisPiece.swift */,
 				D5A180611FBE4BE100523CC3 /* TetrisBox.swift */,
 				D592DCF61FA266A100258905 /* Main.storyboard */,
 				D592DCF91FA266A100258905 /* Assets.xcassets */,
@@ -286,6 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D58989A01FC33753003456B8 /* TetrisPiece.swift in Sources */,
 				D592DCF51FA266A100258905 /* ViewController.swift in Sources */,
 				D50E18CF1FA901A500400D7A /* TetrisBlock.swift in Sources */,
 				D5A180621FBE4BE100523CC3 /* TetrisBox.swift in Sources */,

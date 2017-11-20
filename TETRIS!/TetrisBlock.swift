@@ -16,8 +16,12 @@ class TetrisBlock {
     
     init() {
         sprite.geometry?.firstMaterial?.diffuse.contents = UIColor.red
-        sprite.position = SCNVector3(0.0, 0.5, 0.0)
         sprite.physicsBody = SCNPhysicsBody.dynamic()
-        sprite.physicsBody?.mass = 0.5
+        sprite.physicsBody?.physicsShape = SCNPhysicsShape(geometry: SCNBox(width: 0.02, height: 0.02, length: 0.02, chamferRadius: 0))
+        sprite.name = "NonStuck"
+        sprite.physicsBody?.contactTestBitMask = 0x000000F0
+        sprite.physicsBody?.collisionBitMask = 0x000000F0
+        sprite.physicsBody?.categoryBitMask = 0x000000F0
+        sprite.physicsBody?.mass = 0.001
     }
 }
