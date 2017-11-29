@@ -18,6 +18,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     let configuration = ARWorldTrackingConfiguration()
     var gameFloorNode : SCNNode?
+    var currentPiece : TetrisPiece?
     var foundGamePlane = false
     var lastUpdateTime = 0.0
     
@@ -40,6 +41,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         hidePlayButton()
         
         prepareBackgroundMusic()
+        
+        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(didRightSwipe(_:)))
+        rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.right
+        sceneView.addGestureRecognizer(rightSwipeGestureRecognizer)
+        
+        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(didLeftSwipe(_:)))
+        leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.left
+        sceneView.addGestureRecognizer(leftSwipeGestureRecognizer)
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -122,7 +132,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
     }
     
-    @IBAction func addBlock(_ sender: Any) {
+    @IBAction func playGame(_ sender: Any) {
+        addBlock()
+    }
+    
+    func addBlock() {
         guard let gamePlaneNode = gameFloorNode else { return }
         
         if(!foundGamePlane) {
@@ -132,29 +146,83 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
         
         let pieceNode = TetrisPiece()
+        currentPiece = pieceNode
         
-        for blockNode in pieceNode.pieces { gameFloorNode?.addChildNode(blockNode.sprite) }
+        for blockNode in pieceNode.pieces { gameFloorNode?.addChildNode(blockNode) }
         
     }
     
     //#######################    Gameplay   ####################################
     
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        guard let gameCurrentPiece = currentPiece else { return }
         
         let firstNode = contact.nodeA
         let secondNode = contact.nodeB
         
-        if(firstNode.name == "NonStuck") { firstNode.name = "Stuck" }
-        if(secondNode.name == "NonStuck") { secondNode.name = "Stuck" }
+        var willCreateBlock = false
+        
+        if(firstNode.name == "gameOverSide" && (secondNode.name == "NonStuck" || secondNode.name == "Stuck")) { resetGame(lost: true); return }
+        if((secondNode.name == "NonStuck" || secondNode.name == "Stuck") && secondNode.name == "gameOverSide") { resetGame(lost: true); return }
+        
+        if(firstNode.name == "NonStuck") {
+            //firstNode.name = "Stuck"
+            if let thisBlock = firstNode as? TetrisBlock {
+                if let piece = thisBlock.piece {
+                    if(gameCurrentPiece.pieces[0].position == piece.pieces[0].position) { willCreateBlock = true }
+                    for block in piece.pieces {
+                        if(block.position.y <= thisBlock.position.y){
+                            block.name = "Stuck"
+                        }
+                    }
+                }
+            }
+        }
+        
+        if(secondNode.name == "NonStuck") {
+            //secondNode.name = "Stuck"
+            if let thisBlock = secondNode as? TetrisBlock {
+                if let piece = thisBlock.piece {
+                    if(gameCurrentPiece.pieces[0].position == piece.pieces[0].position) { willCreateBlock = true }
+                    for block in piece.pieces {
+                        if(block.position.y <= thisBlock.position.y){
+                            block.name = "Stuck"
+                        }
+                    }
+                }
+            }
+        }
+        
+        if(willCreateBlock) { addBlock() }
+    }
     
+    @objc
+    func didRightSwipe(_ gesture: UISwipeGestureRecognizer) {
+        guard gesture.state == .ended else { return }
+        if let piece = currentPiece {
+            piece.moveRight()
+        }
+    }
+    
+    @objc
+    func didLeftSwipe(_ gesture: UISwipeGestureRecognizer) {
+        guard gesture.state == .ended else { return }
+        if let piece = currentPiece {
+            piece.moveLeft()
+        }
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         if(time - lastUpdateTime >= 0.1) {
             lastUpdateTime = time
             sceneView.scene.rootNode.enumerateChildNodes { (childNode, _) in
-                if(childNode.name == "NonStuck") { childNode.position.y -= 0.005 }
-                if(childNode.name == "Stuck") { childNode.physicsBody?.velocity = SCNVector3(0.0, 0.0, 0.0) }
+                if(childNode.name == "NonStuck") { childNode.position.y -= 0.01 }
+                if(childNode.name == "Stuck") {
+                    childNode.physicsBody?.velocity = SCNVector3(0.0, 0.0, 0.0)
+                    if (childNode.position.y - Float(ceil(childNode.position.y * 50)) / 50 != 0) {
+                        childNode.position.y = Float(ceil(childNode.position.y * 50)) / 50
+                    }
+                }
             }
         }
     }
@@ -193,8 +261,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     //#######################    Restart AR Session   ####################################
     
-    @IBAction func restartSession(_ sender: Any) {
-        showMessage("Reinitializing session...")
+    @IBAction func restartSession(_ sender: Any) {  resetGame(lost: false)  }
+    
+    func resetGame(lost: Bool) {
+        if(lost) {
+            showMessage("You lost! :(")
+        } else {
+            showMessage("Reinitializing session...")
+        }
         hidePlayButton()
         sceneView.session.pause()
         sceneView.scene.rootNode.enumerateChildNodes { (node, _) in

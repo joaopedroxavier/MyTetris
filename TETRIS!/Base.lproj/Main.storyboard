@@ -60,7 +60,7 @@
                                     <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
                                 </state>
                                 <connections>
-                                    <action selector="addBlock:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XdR-6t-eSp"/>
+                                    <action selector="playGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Nyh-hu-yWH"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwP-QT-GMr">

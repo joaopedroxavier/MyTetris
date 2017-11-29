@@ -25,15 +25,15 @@ class TetrisBox {
     let backWallNode = SCNNode(geometry: SCNBox(width: boxWidth, height: boxHeight, length: offset, chamferRadius: 0))
     
     init() {
-        setNode(floorNode, 0.0, 0.0, 0.0)
-        setNode(ceilNode, 0.0, boxHeight, 0.0)
-        setNode(leftWallNode, boxWidth / 2, boxHeight / 2, 0.0)
-        setNode(rightWallNode, -boxWidth / 2, boxHeight / 2, 0.0)
-        setNode(frontWallNode, 0.0, boxHeight / 2, boxLength/2 + offset + epsilon)
-        setNode(backWallNode, 0.0, boxHeight / 2, -(boxLength/2 + offset + epsilon))
+        setNode(floorNode, 0.0, 0.0, 0.0, "BoxSide")
+        setNode(ceilNode, 0.0, boxHeight, 0.0, "gameOverSide")
+        setNode(leftWallNode, boxWidth / 2, boxHeight / 2, 0.0, "BoxSide")
+        setNode(rightWallNode, -boxWidth / 2, boxHeight / 2, 0.0, "BoxSide")
+        setNode(frontWallNode, 0.0, boxHeight / 2, boxLength/2 + offset + epsilon, "BoxSide")
+        setNode(backWallNode, 0.0, boxHeight / 2, -(boxLength/2 + offset + epsilon), "BoxSide")
     }
     
-    func setNode(_ node: SCNNode, _ x: CGFloat, _ y: CGFloat, _ z: CGFloat) {
+    func setNode(_ node: SCNNode, _ x: CGFloat, _ y: CGFloat, _ z: CGFloat, _ name: String) {
         node.position = SCNVector3(x, y, z)
         node.geometry?.firstMaterial?.diffuse.contents = UIColor.darkGray
         node.geometry?.firstMaterial?.transparency = CGFloat(0.1)
@@ -41,6 +41,6 @@ class TetrisBox {
         node.physicsBody?.contactTestBitMask = 0x000000F0
         node.physicsBody?.collisionBitMask = 0x000000F0
         node.physicsBody?.categoryBitMask = 0x000000F0
-        node.name = "BoxSide"
+        node.name = name
     }
 }
